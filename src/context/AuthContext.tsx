@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useState, useEffect, useContext } from 'react';
+import { createContext, useState, useEffect, useContext, useRef } from 'react';
 
 type User = { id: string; email: string } | null;
 
@@ -17,10 +17,12 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser ] = useState<User>(null);
     const [loading, setLoading] = useState(true);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const abortControllerRef = useRef<AbortController | null>(null);
 
-    async function fetchUser() {
+    async function fetchUser(signal?: AbortSignal) {
         try {
-            const res = await fetch("/api/auth/me", {credentials: "include"});
+            const res = await fetch("/api/auth/me", {credentials: "include", signal });
             if (res.ok) {
                 const data = await res.json();
                 setUser(data.user);
@@ -34,25 +36,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    let interval: NodeJS.Timeout;
-
     useEffect(() => {
+        abortControllerRef.current = new AbortController();
+        const signal = abortControllerRef.current.signal;
+
         async function startRefresh() {
             try {
                 await fetch("/api/auth/refresh", {
                     method: "POST",
                     credentials: 'include',
+                    signal
                 })
-                await fetchUser();
+                await fetchUser(signal);
             } catch {
                 setUser(null);
             }
         }
-        fetchUser();
+        fetchUser(signal);
 
-        interval = setInterval(startRefresh, 10 * 60 * 1000);
+        intervalRef.current = setInterval(startRefresh, 10 * 60 * 1000);
 
-        return () => clearInterval(interval);
+        return () => {
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (abortControllerRef.current) abortControllerRef.current.abort();
+        }
     }, [])
 
     async function login(username: string, password: string) {
@@ -89,10 +96,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function logout() {
         try {
-            fetch("/api/auth/logout", {method: 'POST', credentials: 'include'});
-        } finally {
+            if (abortControllerRef.current) abortControllerRef.current.abort();
+            if (intervalRef.current) clearInterval(intervalRef.current);
+            await fetch("/api/auth/logout", {method: 'POST', credentials: 'include'});
+        } catch (err){
+            console.error("Logout failed", err)
+        }finally {
           setUser(null);
-          if (interval) clearInterval(interval);  
         }
     }
     return (
