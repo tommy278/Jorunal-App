@@ -9,7 +9,7 @@ interface AuthContextProps {
     loading: boolean;
     login: (username: string, password: string ) => Promise<void>;
     register: (username: string, email: string, password: string, confirmPassword: string) => Promise<void>;
-    logout: () => void;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
@@ -34,9 +34,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    useEffect(() => {
-        let interval: NodeJS.Timeout;
+    let interval: NodeJS.Timeout;
 
+    useEffect(() => {
         async function startRefresh() {
             try {
                 await fetch("/api/auth/refresh", {
@@ -66,7 +66,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await fetchUser();
         } catch (err) {
             console.error("Something went wrong:", err)
-            }
+        }
     }
 
     async function register(username: string, email: string, password: string, confirmPassword: string) {
@@ -91,7 +91,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
             fetch("/api/auth/logout", {method: 'POST', credentials: 'include'});
         } finally {
-          setUser(null);  
+          setUser(null);
+          if (interval) clearInterval(interval);  
         }
     }
     return (

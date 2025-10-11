@@ -1,22 +1,14 @@
 "use client";
 
-export default function Home() {
-    
-    async function handleLogout() {
-        const res = await fetch("/api/auth/logout", {
-            method: "POST",
-            credentials: "include"
-        })
-        const data = await res.json()
+import { useAuth } from '@/context/AuthContext';
 
-        if (!res.ok) {
-            console.error(data.error || "Logout failed");
-            return;
-        }
-        console.log(data.message);
-        window.location.href = "/login";
+export default function Home() {
+    const { logout } = useAuth();
+
+    async function handleLogout() {
+        await logout();
+        window.location.href = '/login';
     }
-    
     return(
         <div>
             <button onClick={handleLogout}>Log Out</button>

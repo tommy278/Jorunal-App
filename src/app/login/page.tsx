@@ -1,33 +1,29 @@
 "use client";
 
-import {useState} from 'react';
+import { useAuth } from "@/context/AuthContext";
 
-export default function Home() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
+export default function Login () {
+  const { login } = useAuth();
 
-    async function handleLogin() {
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ username, password }),
-        credentials: "include",
-      })
-      const data = await res.json();
-      if (!res.ok) {
-        setMessage(data.error || "Registration Failed")
-        return;
-      }
-      setMessage("Login successful")
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement)
+    const username = formData.get('username') as string;
+    const password = formData.get('password') as string;
+
+    try {
+      await login(username, password);
+      console.log("Logged In!")
+    } catch (err) {
+      console.error("Login failed", err)
     }
+  }
 
   return (
-    <div>
-    <p>{message}</p>
-      <input placeholder="Username or Email" type="text" value={username} onChange={(e) => setUsername(e.target.value)}/>
-      <input placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button onClick={handleLogin}>Log In</button>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input name="username" placeholder="Username" />
+      <input name="password" placeholder="Password" />
+      <button type="submit">Login</button>
+    </form>
   );
 }

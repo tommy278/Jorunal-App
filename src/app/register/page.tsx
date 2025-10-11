@@ -1,41 +1,32 @@
 "use client";
 
-import {useState} from 'react';
+import { useAuth } from "@/context/AuthContext";
 
-export default function Home() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+export default function Register() {
+  const { register } = useAuth();
 
-    async function handleRegister() {
-        if (password != confirmPassword) {
-          setMessage("Passwords must match")
-          console.error("Passwords do not match")
-          return;
-        }
-        const res = await fetch("/api/auth/register", {
-          method: "POST",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({ username, email, password })
-        })
-        const data = await res.json();
-        if (!res.ok) {
-          setMessage(data.error || "Registration Failed")
-          return;
-        }
-        setMessage("Registration successful")
+  async function handleRegister(e: React.FormEvent) {
+    e.preventDefault();
+    const formData = new FormData(e.target as HTMLFormElement)
+    const username = (formData.get('username') as string).trim();
+    const password = (formData.get('password') as string).trim();
+    const confirmPassword = (formData.get('confirm_password') as string).trim();
+    const email = (formData.get('email') as string).trim();
+
+    try{
+      await register(username, email, password, confirmPassword);
+      console.log("Succesfully registered");
+    } catch(err) {
+      console.error("Registration failed", err)
     }
-
-  return (
-    <div>
-        <p>{message}</p>
-      <input placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} type="text" />
-      <input placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} type="password" />
-      <input placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}type="password" />
-      <input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} type="text" />
-      <button onClick={handleRegister}>Register</button>
-    </div>
-  );
+  }
+  return(
+    <form onSubmit={handleRegister}>
+      <input name="username" placeholder="Username" />
+      <input name="password" placeholder="password" />
+      <input name="confirm_password" placeholder="Confirm Password" />
+      <input name="email" placeholder="Enter email here..." />
+      <button type="submit">Register</button>
+    </form>
+  )
 }
