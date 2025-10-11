@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Register() {
-  const { register } = useAuth();
+  const { register, login } = useAuth();
+  const router = useRouter();
 
   async function handleRegister(e: React.FormEvent) {
     e.preventDefault();
@@ -13,19 +15,22 @@ export default function Register() {
     const confirmPassword = (formData.get('confirm_password') as string).trim();
     const email = (formData.get('email') as string).trim();
 
-    try{
+    try {
       await register(username, email, password, confirmPassword);
-      console.log("Succesfully registered");
+      await login(username, password)
+      console.log("Successfully registered");
+      router.push("/dashboard")
     } catch(err) {
       console.error("Registration failed", err)
     }
   }
+
   return(
     <form onSubmit={handleRegister}>
-      <input name="username" placeholder="Username" />
-      <input name="password" placeholder="password" />
-      <input name="confirm_password" placeholder="Confirm Password" />
-      <input name="email" placeholder="Enter email here..." />
+      <input name="username" placeholder="Username" type="text" />
+      <input name="password" placeholder="Password" type="password" />
+      <input name="confirm_password" placeholder="Confirm Password" type="password" />
+      <input name="email" placeholder="Enter email here..." type="email" />
       <button type="submit">Register</button>
     </form>
   )

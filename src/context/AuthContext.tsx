@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useState, useEffect, useContext, useRef } from 'react';
+import { isValidEmail, isCommonEmail, isValidPassword } from "@/lib/validation";
 
 type User = { id: string; email: string } | null;
 
@@ -78,20 +79,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function register(username: string, email: string, password: string, confirmPassword: string) {
         if (password !== confirmPassword) {
-            console.error("Passwords do not match", 401)
-            return
+            throw new Error("Passwords do not match")
         }
-        try {
-            const res = await fetch("/api/auth/register", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ username, email, password })
-            })
-            if (!res.ok) throw new Error("Registration failed");
-            await fetchUser();
-        } catch(err) {
-            console.error("Something went wrong", 401)
+
+        if (!isValidPassword(password)) {
+            throw new Error("Password not strong enough")
         }
+
+        if (!isValidEmail(email)) {
+            throw new Error("Not a valid email address")
+        } 
+        if (!isCommonEmail(email)){
+            throw new Error("Please use a Gmail, Yahoo, or Outlook email!")
+        } 
+
+        const res = await fetch("/api/auth/register", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({ username, email, password })
+        })
+
+        if (!res.ok) {
+            const data = await res.json().catch(() => ({}));
+            throw new Error(data?.message || "Registration failed");
+        }
+        
+        await fetchUser();
     }
 
     async function logout() {

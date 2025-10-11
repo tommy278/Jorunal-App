@@ -1,9 +1,11 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function Login () {
   const { login } = useAuth();
+  const router = useRouter();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -13,6 +15,7 @@ export default function Login () {
 
     try {
       await login(username, password);
+      router.push("/dashboard")
       console.log("Logged In!")
     } catch (err) {
       console.error("Login failed", err)
@@ -21,8 +24,8 @@ export default function Login () {
 
   return (
     <form onSubmit={handleSubmit}>
-      <input name="username" placeholder="Username" />
-      <input name="password" placeholder="Password" />
+      <input name="username" placeholder="Username" type="username" />
+      <input name="password" placeholder="Password" type="password" />
       <button type="submit">Login</button>
     </form>
   );
