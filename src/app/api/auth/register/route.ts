@@ -8,5 +8,5 @@ export async function POST(req: NextRequest) {
     await prisma.user.create({
         data: { username, email, password: hashedPassword }
     })
-    return NextResponse.json({ message: "Succesfully resgitered"})
+    return NextResponse.json({ message: "Successfully registered"})
 }

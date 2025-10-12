@@ -14,18 +14,18 @@ export default function Navbar() {
     }
 
     return(
-        <nav>
+        <nav className="flex justify-end gap-x-5 mr-5">
             {!user ? (
-                <div>
+                <>
                     <Link href="/">Home</Link>
                     <Link href="/login">Login</Link>
                     <Link href="/register">Register</Link>
-                </div>
+                </>
             ): (
-                <div>
-                    <Link href="/dashboard">Home</Link>
+                <>
+                    <button onClick={() => router.push(`/dashboard/${user.id}`)}>Home</button>
                     <button onClick={handleLogout}>Logout</button>
-                </div>
+                </>
             )}
         </nav>
     )

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         .setExpirationTime("15m")
         .sign(new TextEncoder().encode(process.env.JWT_ACCESS_SECRET));
 
-        const res = NextResponse.json({ message: "Refreshed succesfully "});
+        const res = NextResponse.json({ message: "Refreshed successfully "});
         res.cookies.set("access_token", newAccess, {
             httpOnly: true,
             sameSite: "lax",

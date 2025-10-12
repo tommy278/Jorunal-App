@@ -19,7 +19,6 @@ export default function Register() {
       await register(username, email, password, confirmPassword);
       await login(username, password)
       console.log("Successfully registered");
-      router.push("/dashboard")
     } catch(err) {
       console.error("Registration failed", err)
     }

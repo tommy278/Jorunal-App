@@ -2,6 +2,7 @@
 
 import { createContext, useState, useEffect, useContext, useRef } from 'react';
 import { isValidEmail, isCommonEmail, isValidPassword } from "@/lib/validation";
+import { useRouter } from "next/navigation";
 
 type User = { id: string; email: string } | null;
 
@@ -20,6 +21,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [loading, setLoading] = useState(true);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const abortControllerRef = useRef<AbortController | null>(null);
+    const router = useRouter();
 
     async function fetchUser(signal?: AbortSignal) {
         try {
@@ -27,40 +29,51 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if (res.ok) {
                 const data = await res.json();
                 setUser(data.user);
+                return(data.user) // return the user object for login
             } else {
                 setUser(null);
+                return null
             }
         } catch {
             setUser(null);
+            return null
         } finally {
             setLoading(false);
         }
     }
 
     useEffect(() => {
-        abortControllerRef.current = new AbortController();
-        const signal = abortControllerRef.current.signal;
+        let aborted: boolean = false;
+        const RETRY_DELAY: number = 10000;
+        const REFRESH_INTERVAL: number = 5 * 60 * 1000;
+        let retries: number = 0;
+        let MAX_RETRIES: number = 3;
 
-        async function startRefresh() {
+        async function startRefreshLoop() {
+            if (aborted) return;
             try {
-                await fetch("/api/auth/refresh", {
-                    method: "POST",
-                    credentials: 'include',
-                    signal
-                })
-                await fetchUser(signal);
-            } catch {
-                setUser(null);
+                await fetch("/api/auth/refresh", { method: "POST", credentials: "include" })
+                await fetchUser();
+                retries = 0
+            } catch (err) {
+                console.error("Could not refresh session", err)
+                retries += 1;
+                if (retries <= MAX_RETRIES) {
+                    if (!aborted) setTimeout(startRefreshLoop, RETRY_DELAY)
+                    return;
+                } else {
+                    console.warn("Max retries reached, logging out.")
+                    setUser(null);
+                    return;
+                }
             }
+            if (!aborted) setTimeout(startRefreshLoop, REFRESH_INTERVAL)
         }
-        fetchUser(signal);
-
-        intervalRef.current = setInterval(startRefresh, 10 * 60 * 1000);
+        startRefreshLoop();
 
         return () => {
-            if (intervalRef.current) clearInterval(intervalRef.current);
-            if (abortControllerRef.current) abortControllerRef.current.abort();
-        }
+            aborted = true;
+        };
     }, [])
 
     async function login(username: string, password: string) {
@@ -71,11 +84,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             body: JSON.stringify({ username, password }),
         }); 
         if (!res.ok) throw new Error("Login failed");
-        await fetchUser();
+
+        // Save the user's id to append to dashboard
+        const user = await fetchUser();
+        router.push(`/dashboard/${user.id}`)
+        
         } catch (err) {
-            console.error("Something went wrong:", err)
+                console.error("Something went wrong:", err)
+            }
         }
-    }
 
     async function register(username: string, email: string, password: string, confirmPassword: string) {
         if (password !== confirmPassword) {

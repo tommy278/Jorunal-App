@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
     const {username, password} = await req.json()
 
     const user = await prisma.user.findFirst(
-        {where: 
+        { where: 
             {OR: [
                 {username: username},
                 {email: username}
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
     const accessToken = signToken({ id: user.id, email: user.email }, "access")
     const refreshToken = signToken({ id: user.id }, "refresh")
     
-    const res = NextResponse.json({ message: "Logged in succesfully",
+    const res = NextResponse.json({ message: "Logged in successfully",
         user: { id: user.id, email: user.email}
      })
 

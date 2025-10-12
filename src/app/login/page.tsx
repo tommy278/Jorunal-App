@@ -15,7 +15,6 @@ export default function Login () {
 
     try {
       await login(username, password);
-      router.push("/dashboard")
       console.log("Logged In!")
     } catch (err) {
       console.error("Login failed", err)
