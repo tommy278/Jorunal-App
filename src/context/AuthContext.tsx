@@ -20,7 +20,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser ] = useState<User>(null);
     const [loading, setLoading] = useState(true);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
-    const abortControllerRef = useRef<AbortController | null>(null);
     const router = useRouter();
 
     async function fetchUser() {
@@ -71,6 +70,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         return () => {
             aborted = true;
+            if (intervalRef.current) clearTimeout(intervalRef.current)
         };
     }, [])
 
@@ -83,49 +83,56 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }); 
         if (!res.ok) throw new Error("Login failed");
 
-        // Save the user's id to append to dashboard
-        const user = await fetchUser();
-        router.push(`/dashboard/${user.id}`)
+        await fetchUser();
+        router.push("/dashboard/entries")
         
         } catch (err) {
                 console.error("Something went wrong:", err)
+                throw err;
             }
         }
 
     async function register(username: string, email: string, password: string, confirmPassword: string) {
-        if (password !== confirmPassword) {
-            throw new Error("Passwords do not match")
+        try {
+            if (password !== confirmPassword) {
+                throw new Error("Passwords do not match")
+            }
+    
+            if (!isValidPassword(password)) {
+                throw new Error("Password not strong enough")
+            }
+    
+            if (!isValidEmail(email)) {
+                throw new Error("Not a valid email address")
+            } 
+            if (!isCommonEmail(email)){
+                throw new Error("Please use a Gmail, Yahoo, or Outlook email!")
+            } 
+    
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ username, email, password })
+            })
+    
+            if (!res.ok) {
+                const data = await res.json().catch(() => ({}));
+                throw new Error(data?.message || "Registration failed");
+            }
+            
+            await fetchUser();
+        } catch (err) {
+            console.error("Registration error", err);
+            throw err;
         }
-
-        if (!isValidPassword(password)) {
-            throw new Error("Password not strong enough")
-        }
-
-        if (!isValidEmail(email)) {
-            throw new Error("Not a valid email address")
-        } 
-        if (!isCommonEmail(email)){
-            throw new Error("Please use a Gmail, Yahoo, or Outlook email!")
-        } 
-
-        const res = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({ username, email, password })
-        })
-
-        if (!res.ok) {
-            const data = await res.json().catch(() => ({}));
-            throw new Error(data?.message || "Registration failed");
-        }
-        
-        await fetchUser();
     }
 
     async function logout() {
         try {
-            if (abortControllerRef.current) abortControllerRef.current.abort();
-            if (intervalRef.current) clearInterval(intervalRef.current);
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+                intervalRef.current = null;
+            }
             await fetch("/api/auth/logout", {method: 'POST', credentials: 'include'});
         } catch (err){
             console.error("Logout failed", err)

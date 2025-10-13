@@ -11,7 +11,7 @@ interface Data {
         }
 
 export default function NewEntry(){
-    const { user } = useAuth(); // remember to use user.id, user is an object
+    const { user, loading } = useAuth(); // remember to use user.id, user is an object
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [mood, setMood] = useState(0);
@@ -32,6 +32,11 @@ export default function NewEntry(){
             mood: mood
         }
 
+        if (data.mood < 0) {
+            console.error("Invalid Input")
+            return
+        } 
+
         try {
            const res = await fetch("/api/users/entries", {
             method: "POST",
@@ -45,8 +50,9 @@ export default function NewEntry(){
             setContent("");
             setMood(0);
         }
-        
     }
+
+    if (loading) return <div>This is the loading screen</div>
 
     return(
         <form onSubmit={handleSubmit}>
@@ -67,6 +73,8 @@ export default function NewEntry(){
                 placeholder="Mood"
                 value = {mood}
                 type = "number"
+                min = "1"
+                max = "10"
             />
             <button type="submit">Add Entry</button>
         </form>

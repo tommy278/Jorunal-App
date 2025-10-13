@@ -1,10 +1,8 @@
 "use client"
 
-import { useEffect, useState, use } from "react";
-
-interface PostParams {
-    params: {slug: string;}
-}
+import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import Link from "next/link";
 
 interface Entry {
     title: string,
@@ -16,14 +14,14 @@ interface Entry {
     mood: number;
 }
 
-export default function Page({ params: paramsPromise}: { params: Promise<PostParams["params"]> }) {
-    const params = use(paramsPromise)
+export default function Entries() {
+    const { user, loading } = useAuth();
     const [entries, setEntries] = useState<Entry[]>([]);
 
     useEffect(() => {
         async function getEntries() {
             try {
-                const res = await fetch(`/api/users/entries?id=${params.slug}`)
+                const res = await fetch(`/api/users/entries?id=${user?.id}`)
                 if (!res.ok) throw new Error("Failed to fetch entries")
 
                 const data = await res.json();
@@ -32,28 +30,40 @@ export default function Page({ params: paramsPromise}: { params: Promise<PostPar
                 } else {
                     setEntries([]);
                 }
-                
-                console.log(data.entries);
+
             } catch (err) {
                 console.error("Could not get entries", err)
             }
         }
         getEntries();
-    },[params])
+    },[user])
+
+    if (loading) return<div>This is the loading screen</div>;
+    if (!user) return <div>Please log in</div>;
 
     return(
         <div>
-            <ul>
             {entries.length === 0 ? (
                 <p>No entries found</p>
             ): (
-                <ul>
+                <>
                     {entries.map((entry) => (
-                        <li key={ entry.id }>{entry.title}{ entry.content }: { entry.mood }</li>
+                        <div key={ entry.id }>
+                            <Link 
+                                href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
+                            >{entry.title}{ entry.content }: { entry.mood }
+                            </Link>
+                        </div>
                     ))}
-                </ul>
+                </>
             )}
-            </ul>
         </div>
     )
+}
+
+function slugify(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');  
 }

@@ -44,3 +44,37 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ message: "Failed to create entry" })
     }
 }
+
+interface PatchEntry{
+    title?: string,
+    content?: string,
+    mood?: number
+}
+
+export async function PATCH (req: NextRequest) {
+    const { id, title, content, mood } = await req.json()
+    const EntryToUpdate:PatchEntry = {}
+
+    if (!id) return NextResponse.json({ message: "Missing entry ID" }, { status: 400 })
+
+    if (title !== undefined) EntryToUpdate.title = title
+    if (content !== undefined ) EntryToUpdate.content = content
+    if (mood !== undefined ) EntryToUpdate.mood = mood
+
+    if (!title && mood !== undefined && !content) {
+        return NextResponse.json({ message: "Nothing to patch" },  { status: 401 })
+    }
+
+    try {
+        const PatchedEntry = await prisma.entry.update({
+            where: { id },
+            data: EntryToUpdate 
+        })
+        return NextResponse.json({ 
+            message: "Successfully updated the entry",
+            data: PatchedEntry
+        })
+    } catch (err) {
+        return NextResponse.json({ message: "Failed to update entry", error: err }, { status: 401 })
+    }
+}

@@ -23,7 +23,8 @@ export default function Navbar() {
                 </>
             ): (
                 <>
-                    <button onClick={() => router.push(`/dashboard/${user.id}`)}>Home</button>
+                    <button onClick={() => router.push("/dashboard/entries")}>Home</button>
+                    <Link href="/dashboard/new_entry">New Entry</Link>
                     <button onClick={handleLogout}>Logout</button>
                 </>
             )}
