@@ -19,6 +19,7 @@ export default function Page ({params}: PageProps) {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [mood, setMood] = useState(0);
+    const [saving, setSaving] = useState(false);
 
     const router = useRouter();
 
@@ -48,10 +49,11 @@ export default function Page ({params}: PageProps) {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+        setSaving(true);
 
         const data: Data = { id }
         if (title) data.title = title;
-        if (content) data.mood = mood;
+        if (content) data.content = content;
         if (mood !== undefined) data.mood = mood;
 
         try {
@@ -60,11 +62,12 @@ export default function Page ({params}: PageProps) {
                 credentials: "include",
                 body: JSON.stringify(data)
             })
-            if (!res.ok) throw new Error("Error patching data")     
+            if (!res.ok) throw new Error("Error patching data")
+            router.push(`/dashboard/view_entry/${id}-${slugify(title)}`)
         } catch (err) {
             console.error("Error processing the patch request", err)
         } finally {
-            router.push(`/dashboard/view_entry/${id}-${slugify(title)}`)
+            setSaving(false);
         }
     }
 
@@ -76,7 +79,9 @@ export default function Page ({params}: PageProps) {
             <input value={title} onChange={(e) => setTitle(e.target.value)}/>
             <input value={content} onChange={(e) => setContent(e.target.value)} />
             <input value={mood} type="number" min="1" max="10" onChange={(e) => setMood(Number(e.target.value))}/>
-            <button type="submit" disabled={loading}>Edit Entry</button>
+            <button type="submit" disabled={saving} >
+                {saving ? "Saving...": "Edit Entry"}
+            </button>
         </form>
     )
 }

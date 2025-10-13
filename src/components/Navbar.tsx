@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Search from "./Search"
 
 export default function Navbar() {
     const {user, logout} = useAuth();
@@ -23,6 +24,7 @@ export default function Navbar() {
                 </>
             ): (
                 <>
+                    <Search />
                     <button onClick={() => router.push("/dashboard/entries")}>Home</button>
                     <Link href="/dashboard/new_entry">New Entry</Link>
                     <button onClick={handleLogout}>Logout</button>
