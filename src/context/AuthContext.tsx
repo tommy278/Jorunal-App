@@ -23,19 +23,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const abortControllerRef = useRef<AbortController | null>(null);
     const router = useRouter();
 
-    async function fetchUser(signal?: AbortSignal) {
+    async function fetchUser() {
         try {
-            const res = await fetch("/api/auth/me", {credentials: "include", signal });
+            const res = await fetch("/api/auth/me", {credentials: "include"});
             if (res.ok) {
                 const data = await res.json();
-                setUser(data.user);
+                setUser(data.user)
                 return(data.user) // return the user object for login
             } else {
-                setUser(null);
                 return null
             }
         } catch {
-            setUser(null);
             return null
         } finally {
             setLoading(false);

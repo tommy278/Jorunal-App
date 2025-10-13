@@ -7,6 +7,7 @@ interface PostParams {
 }
 
 interface Entry {
+    title: string,
     id: string;
     createdAt: string;
     updatedAt: string;
@@ -48,7 +49,7 @@ export default function Page({ params: paramsPromise}: { params: Promise<PostPar
             ): (
                 <ul>
                     {entries.map((entry) => (
-                        <li key={ entry.id }>{ entry.content }: { entry.mood }</li>
+                        <li key={ entry.id }>{entry.title}{ entry.content }: { entry.mood }</li>
                     ))}
                 </ul>
             )}

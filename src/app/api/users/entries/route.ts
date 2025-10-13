@@ -6,8 +6,10 @@ export async function GET(req: NextRequest) {
     const userId = url.searchParams.get("id")
     if (!userId ) return NextResponse.json({ message: "No id provided" })
 
-    const entries = await prisma.entry.findMany({ where: 
-        { userId } 
+    const entries = await prisma.entry.findMany({
+        where: 
+        { userId },
+        orderBy: {createdAt: 'desc'} 
     })
     
     if (!entries || entries.length === 0) {
@@ -20,6 +22,25 @@ export async function GET(req: NextRequest) {
     })
 }
 
+interface Post{
+    userId: string,
+    content: string,
+    mood: number,
+    title?: string
+}
+
 export async function POST(req: NextRequest) {
-    
+    try {
+        const { userId, title, content, mood }: Post = await req.json()
+
+        if (!userId || !content || typeof mood !== "number") {
+            return NextResponse.json({ message: "Invalid input"}, {status: 400})
+        }
+
+        const newEntry = await prisma.entry.create({ data: { userId, content, mood, title } })
+        return NextResponse.json({ message: "Entry successfully created", entry: newEntry })
+    } catch (err) {
+        console.error(err)
+        return NextResponse.json({ message: "Failed to create entry" })
+    }
 }
