@@ -1,70 +1,52 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import TextField from "@mui/material/TextField";
+" use client";
 
-interface SearchModalProps {
-    open: boolean;
+import { motion, AnimatePresence } from "framer-motion";
+import { ReactNode } from "react";
+
+interface ModalProps {
+    isOpen: boolean;
     onClose: () => void;
-    onSearch: (query: string) => void;
-    results: React.ReactNode[];
-    query: string;
-    setQuery: (value: string) => void;
-    title?: string;
+    children: ReactNode
 }
 
-const style = {
-    position: "absolute" as const,
-    top: "10%",
-    left: "50%",
-    transform: "translate(-50%, 0)",
-    width: "50%",
-    maxHeight: "70%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    boxShadow: 24,
-    p: 4,
-    overflowY: "auto",
-};
-
-export default function SearchModal({
-    open,
-    onClose,
-    onSearch,
-    results,
-    query,
-    setQuery,
-    title = "Search",
-}: SearchModalProps) {
-    function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        const value = e.target.value;
-        setQuery(value);
-        onSearch(value);
-    }
-
+export default function AnimatedModal({isOpen, onClose, children}: ModalProps) {
     return (
-        <Modal open={open} onClose={onClose}>
-            <Box sx={style} onClick={(e) => e.stopPropagation()}>
-                <Typography variant="h6" mb={2}>
-                    {title}
-                </Typography>
-                <TextField
-                    fullWidth
-                    placeholder="Type to search..."
-                    value={query}
-                    onChange={handleChange}
-                />
-                <Box mt={3}>
-                    {results.map((r) => (
-                        <div
-                            key={(r as any).key}
-                            onClick={onClose} // collapse modal when clicking result
-                        >
-                            {r}
-                        </div>
-                    ))}
-                </Box>
-            </Box>
-        </Modal>
-    );
+        <AnimatePresence>
+            {isOpen && (
+                <motion.div
+                    key="backdrop"
+                    initial = {{ opacity: 0 }}
+                    animate={{ opacity: 0.5 }}
+                    exit={{ opacity: 0 }}
+                    onClick={onClose}
+                    style ={{
+                        position: "fixed",
+                        inset: 0,
+                        background: "black",
+                        zIndex: 50,
+                    }}>
+                        <motion.div
+                            key="modal"
+                            initial={{ scale: 0.8, opacity: 0}}
+                            animate={{ scale: 1, opacity: 1}}
+                            exit={{ scale: 0.8, opacity: 0}}
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                position: "absolute",
+                                top: "50%",
+                                left: "50%",
+                                transform: "translate(-50%, -50%)",
+                                background: "white",
+                                padding: "2rem",
+                                borderRadius: "10px",
+                                width: "90%",
+                                maxWidth: "500px",
+                                zIndex: 51
+                            }}>
+                                {children}
+                            </motion.div>
+                    </motion.div>
+            )}
+        </AnimatePresence>
+    )
 }
