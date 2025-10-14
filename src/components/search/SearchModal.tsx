@@ -1,4 +1,4 @@
-" use client";
+"use client";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { ReactNode } from "react";
@@ -33,13 +33,14 @@ export default function AnimatedModal({isOpen, onClose, children}: ModalProps) {
                             onClick={(e) => e.stopPropagation()}
                             style={{
                                 position: "absolute",
-                                top: "50%",
-                                left: "50%",
+                                top: "20%",
+                                left: "30%",
                                 transform: "translate(-50%, -50%)",
                                 background: "white",
+                                color: "black",
                                 padding: "2rem",
                                 borderRadius: "10px",
-                                width: "90%",
+                                width: "50%",
                                 maxWidth: "500px",
                                 zIndex: 51
                             }}>

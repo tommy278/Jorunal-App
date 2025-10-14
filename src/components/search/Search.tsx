@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Button from "@mui/material/Button";
 import SearchModal from "./SearchModal";
 import { useAuth } from "@/context/AuthContext";
-import { useDebouncedSearch } from "@/lib/debounce";
+import { useDebouncedSearch } from "@/lib/search/debounce";
 import { renderSearchResults } from "./render";
 
 export default function Search() {
@@ -14,14 +14,13 @@ export default function Search() {
 
     if (!user) return
 
-    const entries = useDebouncedSearch(query, async (q) => {
-        if (!user) return [];
-        const res = await fetch(
-            `/api/users/search_entries?userId=${user.id}&query=${encodeURIComponent(q)}`
-        );
+    const fetchEntries = useCallback(async (q: string) => {
+        const res = await fetch(`/api/users/search_entries?userId=${user.id}&query=${encodeURIComponent(q)}`);
         const data = await res.json();
         return data.entries ?? [];
-    }, 300); 
+    }, [user?.id]); 
+
+    const entries = useDebouncedSearch(query, fetchEntries);
 
     return (
         <>

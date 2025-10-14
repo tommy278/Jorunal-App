@@ -1,5 +1,9 @@
+import Card from "@/components/ThemeElements/Card";
+
 export default function Home() {
   return(
-    <div>This is the home page</div>
+    <Card>
+      This is is the homepage
+    </Card>
   )
 }

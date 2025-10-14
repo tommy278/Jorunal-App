@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
+import Card from "@/components/ThemeElements/Card";
 
 interface Entry {
     title: string,
@@ -48,12 +49,12 @@ export default function Entries() {
             ): (
                 <>
                     {entries.map((entry) => (
-                        <div key={ entry.id }>
+                        <Card key={ entry.id }>
                             <Link 
                                 href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
                             >{entry.title}{ entry.content }: { entry.mood }
                             </Link>
-                        </div>
+                        </Card>
                     ))}
                 </>
             )}

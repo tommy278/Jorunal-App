@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
-import Search from "./Search"
+import Search from "./search/Search"
 
 export default function Navbar() {
     const {user, logout} = useAuth();
@@ -15,20 +15,22 @@ export default function Navbar() {
     }
 
     return(
-        <nav className="flex justify-end gap-x-5 mr-5">
+        <nav className="flex justify-end gap-x-10 mr-5 p-10">
             {!user ? (
-                <>
-                    <Link href="/">Home</Link>
-                    <Link href="/login">Login</Link>
-                    <Link href="/register">Register</Link>
-                </>
+                <div className="navbar">
+                    <div className="nav-item" onClick={() => router.push("/dashboard")}>Home</div>
+                    <div className="nav-item" onClick={() => router.push("/login")}>Login</div>
+                    <div className="nav-item" onClick={() => router.push("/register")}>Register</div>
+                </div>
             ): (
-                <>
+            <div className="navbar">
+                <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>Home</div>
+                <div className="nav-item">
                     <Search />
-                    <button onClick={() => router.push("/dashboard/entries")}>Home</button>
-                    <Link href="/dashboard/new_entry">New Entry</Link>
-                    <button onClick={handleLogout}>Logout</button>
-                </>
+                </div>
+                <Link href="/dashboard/new_entry" className="nav-item">New Entry</Link>
+                <div className="nav-item" onClick={handleLogout}>Logout</div>
+            </div>
             )}
         </nav>
     )
