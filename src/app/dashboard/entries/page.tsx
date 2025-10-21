@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
-import Card from "@/components/ThemeElements/Card";
 
 interface Entry {
     title: string,
@@ -42,19 +41,27 @@ export default function Entries() {
     if (loading) return<div>This is the loading screen</div>;
     if (!user) return <div>Please log in</div>;
 
+    const padding = { padding: "2rem", background: "rgba(255,0,0,0.2)" }
+
     return(
-        <div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10"
+        style={{ marginTop: "2rem"}}>
             {entries.length === 0 ? (
-                <p>No entries found</p>
+                <h1>No Entries Yet</h1>
             ): (
                 <>
                     {entries.map((entry) => (
-                        <Card key={ entry.id }>
-                            <Link 
+                            <Link
+                                key = {entry.id} 
                                 href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
-                            >{entry.title}{ entry.content }: { entry.mood }
+                                className="block bg-blue-500 border border-green-500 rounded-lg"
+                            >
+                                <div style= {padding}>
+                                    <h4 className="font-bold mb-2">{entry.title}</h4>
+                                    <p className="mb-2">{ entry.content }</p> 
+                                    <p>{ entry.mood }</p> 
+                                </div>
                             </Link>
-                        </Card>
                     ))}
                 </>
             )}

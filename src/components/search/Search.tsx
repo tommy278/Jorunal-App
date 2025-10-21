@@ -7,7 +7,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useDebouncedSearch } from "@/lib/search/debounce";
 import { renderSearchResults } from "./render";
 
-export default function Search() {
+interface SearchProp{
+    icon: React.ReactNode;
+}
+
+export default function Search({ icon }: SearchProp) {
     const [open, setOpen] = useState(false);
     const [query, setQuery] = useState("");
     const { user } = useAuth();
@@ -24,7 +28,12 @@ export default function Search() {
 
     return (
         <>
-            <Button onClick={() => setOpen(true)}>Search</Button>
+            <button 
+            onClick={() => setOpen(true)}
+            className="p-0 w-6 h-6 flex items-center justify-center text-gray-700 dark:text-white hover:text-blue-500"
+            >
+                {icon}
+            </button>
             <SearchModal isOpen={open} onClose={() => setOpen(false)}>
                 <h2>Search Entries</h2>
                 <input

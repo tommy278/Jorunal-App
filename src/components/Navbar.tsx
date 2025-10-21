@@ -5,6 +5,11 @@ import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import Search from "./search/Search"
 
+import { GoSignOut } from "react-icons/go";
+import { GoPlus } from "react-icons/go"
+import { GoSearch } from "react-icons/go"
+import { GoRepo } from "react-icons/go";
+
 export default function Navbar() {
     const {user, logout} = useAuth();
     const router = useRouter();
@@ -14,24 +19,47 @@ export default function Navbar() {
         router.push("/");
     }
 
+    const iconClass = "w-6 h-6 text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
+
+    // Tailwind not cooperating 
+    const style = { marginRight: "10px", padding: '8px', display: "flex", alignItems: "center"}
+
     return(
-        <nav className="flex justify-end gap-x-10 mr-5 p-10">
+        <nav className="flex items-center justify-between px-6 bg-white dark:bg-gray-900 shadow-md">
+            <div className="flex items-center space-x-4 cursor-pointer">
+                {!user ? (
+                    <div className="nav-item" onClick={() => router.push("/")}>
+                        < GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
+                    </div>
+                ):(
+                    <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>
+                        <GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
+                    </div>
+                )}
+            </div>
+            
+            <div className="flex items-center space-x-8 mx-6">
             {!user ? (
-                <div className="navbar">
-                    <div className="nav-item" onClick={() => router.push("/dashboard")}>Home</div>
+                <>
+                    
                     <div className="nav-item" onClick={() => router.push("/login")}>Login</div>
                     <div className="nav-item" onClick={() => router.push("/register")}>Register</div>
-                </div>
+                </>
             ): (
-            <div className="navbar">
-                <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>Home</div>
-                <div className="nav-item">
-                    <Search />
+            <>
+                <div style={style}>
+                    <Search icon={<GoSearch className={iconClass}/>}/>
                 </div>
-                <Link href="/dashboard/new_entry" className="nav-item">New Entry</Link>
-                <div className="nav-item" onClick={handleLogout}>Logout</div>
-            </div>
+                <div style={style}>
+                    <Link href="/dashboard/new_entry" ><GoPlus className={iconClass}/></Link>
+                </div>
+                <div style={style}>
+                    <div className="nav-item" onClick={handleLogout}><GoSignOut className={iconClass}/></div>
+                </div>   
+                
+            </>
             )}
+            </div>
         </nav>
     )
 }

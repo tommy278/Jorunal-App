@@ -2,6 +2,7 @@
 
 import { use, useState, useEffect } from "react";
 import Link from "next/link";
+import Loading from "@/components/Loading";
 
 interface PageProps {
     params: Promise<{ slug: string }> 
@@ -42,7 +43,7 @@ export default function Page ({ params }: PageProps) {
         fetchEntry();
     }, [id])
 
-    if (loading) return <p>Loading...</p>
+    if (!loading) return <Loading />
     if (!entry) return <p>Entry not found</p>
 
     return (
