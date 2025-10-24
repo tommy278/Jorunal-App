@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import Search from "./search/Search"
 
 import { GoSignOut } from "react-icons/go";
-import { GoPlus } from "react-icons/go"
+import { GoPlusCircle } from "react-icons/go"
 import { GoSearch } from "react-icons/go"
 import { GoRepo } from "react-icons/go";
 
@@ -20,6 +20,7 @@ export default function Navbar() {
     }
 
     const iconClass = "w-6 h-6 text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
+    const textClass = "text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
 
     // Tailwind not cooperating 
     const style = { marginRight: "10px", padding: '8px', display: "flex", alignItems: "center"}
@@ -29,7 +30,7 @@ export default function Navbar() {
             <div className="flex items-center space-x-4 cursor-pointer">
                 {!user ? (
                     <div className="nav-item" onClick={() => router.push("/")}>
-                        < GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
+                        <GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
                     </div>
                 ):(
                     <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>
@@ -41,22 +42,30 @@ export default function Navbar() {
             <div className="flex items-center space-x-8 mx-6">
             {!user ? (
                 <>
-                    
-                    <div className="nav-item" onClick={() => router.push("/login")}>Login</div>
-                    <div className="nav-item" onClick={() => router.push("/register")}>Register</div>
+                    <div className="nav-item" onClick={() => router.push("/login")}>
+                        <div className={textClass} style = {{ marginRight: "10px" }}>Login</div>
+                    </div>
+                    <div className="nav-item" onClick={() => router.push("/register")}>
+                        <div className={textClass} style = {{ marginRight: "10px" }}>Register</div>
+                    </div>
                 </>
             ): (
             <>
                 <div style={style}>
                     <Search icon={<GoSearch className={iconClass}/>}/>
                 </div>
+
                 <div style={style}>
-                    <Link href="/dashboard/new_entry" ><GoPlus className={iconClass}/></Link>
+                    <Link href="/dashboard/new_entry" >
+                        <GoPlusCircle className={iconClass}/>
+                    </Link>
                 </div>
+
                 <div style={style}>
-                    <div className="nav-item" onClick={handleLogout}><GoSignOut className={iconClass}/></div>
+                    <div className="nav-item" onClick={handleLogout}>
+                        <GoSignOut className={iconClass}/>
+                    </div>
                 </div>   
-                
             </>
             )}
             </div>

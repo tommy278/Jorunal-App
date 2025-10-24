@@ -9,7 +9,7 @@
 
 @media (prefers-color-scheme: dark) {
   body {
-    background: #0d1117;
+    background: #002147;
     color: #e6edf3;
   }
 }
@@ -33,3 +33,9 @@ a {
   background-color: #1e1e1e;
 }
 
+input {
+    padding-top: 5px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+}

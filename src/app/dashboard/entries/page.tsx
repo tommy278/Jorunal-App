@@ -41,11 +41,11 @@ export default function Entries() {
     if (loading) return<div>This is the loading screen</div>;
     if (!user) return <div>Please log in</div>;
 
-    const padding = { padding: "2rem", background: "rgba(255,0,0,0.2)" }
+    const padding = { padding: "2rem" }
 
     return(
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10"
-        style={{ marginTop: "2rem"}}>
+        style={{ marginTop: "2rem", marginRight: "10px", marginLeft: "10px" }}>
             {entries.length === 0 ? (
                 <h1>No Entries Yet</h1>
             ): (

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useCallback } from "react";
-import Button from "@mui/material/Button";
 import SearchModal from "./SearchModal";
 import { useAuth } from "@/context/AuthContext";
 import { useDebouncedSearch } from "@/lib/search/debounce";
 import { renderSearchResults } from "./render";
+
+import { GoXCircle } from "react-icons/go";
 
 interface SearchProp{
     icon: React.ReactNode;
@@ -36,12 +37,34 @@ export default function Search({ icon }: SearchProp) {
             </button>
             <SearchModal isOpen={open} onClose={() => setOpen(false)}>
                 <h2>Search Entries</h2>
-                <input
+                <div style={{ position: "relative", display:"inline-block" }}>
+                   <input
                     type="text"
                     placeholder="Type to search..."
                     value={query}
                     onChange = {(e) =>setQuery(e.target.value)}
+                    autoFocus
+                    style = {{ paddingRight: "2rem" }}
                 />
+                {query && (
+                    <button
+                        onClick={() => setQuery("")}
+                        style={{
+                            position: "absolute",
+                            right: "0.5rem",
+                            top: "50%",
+                            transform: "translateY(-50%",
+                            background: "transparent",
+                            border: "none",
+                            cursor: "pointer",
+                        }}
+                    >
+                        <GoXCircle />
+                    </button>
+                )
+                } 
+                </div>
+                
                  <div style={{ marginTop: "1rem" }}>
                     {entries && entries.length > 0 ? (
                         renderSearchResults(entries, () => setOpen(false))

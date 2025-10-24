@@ -1,7 +1,7 @@
 export default function Home() {
   return(
     <div>
-      TODO: Home
+      <p>PAdding test</p><p>padding</p>
     </div>
   )
 }
