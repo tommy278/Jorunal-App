@@ -26,7 +26,7 @@ input {
     padding-left: 10px;
 }
 
-#center::placeholder {
+.center::placeholder {
   text-align: center;
   font-weight: 600;
 }

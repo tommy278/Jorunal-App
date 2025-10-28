@@ -61,18 +61,18 @@ export default function NewEntry(){
 
     return(
         <form 
-            className="flex flex-col items-center gap-y-5 mt-30"
+            className="flex flex-col items-center gap-y-5 mt-10"
             onSubmit={handleSubmit}>
             <h1 className="font-bold text-blue-500 text-[clamp(3rem,5vw,4rem)]">New Entry</h1>
             <input 
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
-                id="center"
                 placeholder="Title"
                 value = {title}
                 type = "text"
                 className="border rounded-lg 
                             w-[clamp(17rem,40%,50rem)]
                             text-center
+                            center
                             "
             />
             <textarea 
@@ -89,7 +89,10 @@ export default function NewEntry(){
                 {[1, 2, 3, 4, 5].map((star) => (
                     <svg
                     key={star}
-                        className={`w-6 h-6 cursor-pointer transition-colors duration-200 ${
+                        className={`
+                            w-6 h-6 
+                            md:w-9 h-12
+                            cursor-pointer transition-colors duration-200 ${
                             (hovered || mood) >= star ? "text-yellow-400": "text-gray-300"
                         }`}
                         fill="currentColor"
@@ -103,7 +106,7 @@ export default function NewEntry(){
                 ))}
             </div>
             <button 
-                className="border w-30 rounded-lg bg-white/10 backdrop-blur-xs"
+                className="border w-30 rounded-lg bg-white/10 backdrop-blur-xs cursor-pointer"
                 type="submit">Add Entry</button>
         </form>
     )
