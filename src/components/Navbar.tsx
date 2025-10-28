@@ -21,47 +21,51 @@ export default function Navbar() {
 
     const iconClass = "w-6 h-6 text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
     const textClass = "text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
-
-    // Tailwind not cooperating 
-    const style = { marginRight: "10px", padding: '8px', display: "flex", alignItems: "center"}
+    const style = "py-2 flex justify-center"
 
     return(
         <nav className="flex items-center justify-between px-6 bg-white dark:bg-gray-900 shadow-md">
             <div className="flex items-center space-x-4 cursor-pointer">
                 {!user ? (
                     <div className="nav-item" onClick={() => router.push("/")}>
-                        <GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
+                        <GoRepo className={iconClass}/>
                     </div>
                 ):(
                     <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>
-                        <GoRepo className={iconClass} style={{ marginLeft: "10px" }}/>
+                        <GoRepo className={iconClass}/>
                     </div>
                 )}
             </div>
+
             
             <div className="flex items-center space-x-8 mx-6">
             {!user ? (
                 <>
-                    <div className="nav-item" onClick={() => router.push("/login")}>
-                        <div className={textClass} style = {{ marginRight: "10px" }}>Login</div>
+                    <div className={style}>
+                        <div className="nav-item" onClick={() => router.push("/login")}>
+                            <div className={textClass}>Login</div>
+                        </div>  
                     </div>
-                    <div className="nav-item" onClick={() => router.push("/register")}>
-                        <div className={textClass} style = {{ marginRight: "10px" }}>Register</div>
+
+                    <div className={style}>
+                        <div className="nav-item" onClick={() => router.push("/register")}>
+                            <div className={textClass}>Register</div>
+                        </div>
                     </div>
                 </>
             ): (
             <>
-                <div style={style}>
+                <div className={style}>
                     <Search icon={<GoSearch className={iconClass}/>}/>
                 </div>
 
-                <div style={style}>
+                <div className={style}>
                     <Link href="/dashboard/new_entry" >
                         <GoPlusCircle className={iconClass}/>
                     </Link>
                 </div>
 
-                <div style={style}>
+                <div className={style}>
                     <div className="nav-item" onClick={handleLogout}>
                         <GoSignOut className={iconClass}/>
                     </div>

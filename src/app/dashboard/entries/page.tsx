@@ -44,24 +44,23 @@ export default function Entries() {
     const padding = { padding: "2rem" }
 
     return(
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10"
-        style={{ marginTop: "2rem", marginRight: "10px", marginLeft: "10px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10 mt-16 mx-10">
             {entries.length === 0 ? (
                 <h1>No Entries Yet</h1>
             ): (
                 <>
                     {entries.map((entry) => (
-                            <Link
-                                key = {entry.id} 
-                                href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
-                                className="block bg-blue-500 border border-green-500 rounded-lg"
-                            >
-                                <div style= {padding}>
-                                    <h4 className="font-bold mb-2">{entry.title}</h4>
-                                    <p className="mb-2">{ entry.content }</p> 
-                                    <p>{ entry.mood }</p> 
-                                </div>
-                            </Link>
+                        <Link
+                            key = {entry.id} 
+                            href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
+                            className="block bg-blue-500 border border-green-500 rounded-lg"
+                        >
+                            <div style= {padding}>
+                                <h4 className="font-bold mb-2">{entry.title}</h4>
+                                <p className="mb-2">{ entry.content }</p> 
+                                <p>{ entry.mood }</p> 
+                            </div>
+                        </Link>
                     ))}
                 </>
             )}
