@@ -25,3 +25,18 @@ export async function GET (req: NextRequest) {
         console.error('Could not find entry', err)
     }
 }
+
+export async function DELETE(req: NextRequest) {
+    const url = new URL(req.url)
+    const id = url.searchParams.get("id")
+
+    if (!id) return NextResponse.json({ message: "No entry ID provided"}, {status: 400})
+    
+    try {
+        await prisma.entry.delete({ where: {id} });
+        return NextResponse.json({ message: "Entry successfully deleted"})
+    } catch (err) {
+        console.error("Delete failed", err)
+        return NextResponse.json({ message: "Failed to delete entry"}, {status: 500})
+    }
+}

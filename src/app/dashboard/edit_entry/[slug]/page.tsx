@@ -71,18 +71,39 @@ export default function Page ({params}: PageProps) {
         }
     }
 
+    async function handleDelete() {
+        setSaving(true);
+        try {
+            const res = await fetch(`/api/users/get_entry?id=${id}`, {
+                method: "DELETE",
+                credentials: "include",
+            })
+            if (!res.ok) throw new Error("Error deleting data")
+            router.push("/dashboard/entries")
+        } catch(err) {
+            console.error("Error executing the delete request", err)
+        } finally {
+            setSaving(false);
+        }
+    }
+
     if (loading) return <div>Loading...</div>
     if (!id) return <div>Something went wrong, try again</div>
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input value={title} onChange={(e) => setTitle(e.target.value)}/>
-            <input value={content} onChange={(e) => setContent(e.target.value)} />
-            <input value={mood} type="number" min="1" max="10" onChange={(e) => setMood(Number(e.target.value))}/>
-            <button type="submit" disabled={saving} >
-                {saving ? "Saving...": "Edit Entry"}
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input value={title} onChange={(e) => setTitle(e.target.value)}/>
+                <input value={content} onChange={(e) => setContent(e.target.value)} />
+                <input value={mood} type="number" min="1" max="10" onChange={(e) => setMood(Number(e.target.value))}/>
+                <button type="submit" disabled={saving} >
+                    {saving ? "Saving...": "Edit Entry"}
+                </button>
+            </form>
+            <button onClick={handleDelete}>
+                Delete
             </button>
-        </form>
+        </div>
     )
 }
 
