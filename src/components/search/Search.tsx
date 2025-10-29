@@ -36,7 +36,7 @@ export default function Search({ icon }: SearchProp) {
                 {icon}
             </button>
             <SearchModal isOpen={open} onClose={() => setOpen(false)}>
-                <h2>Search Entries</h2>
+                <h2 className="text-gray font-semibold mb-2 text-10">Search Entries</h2>
                 <div style={{ position: "relative", display:"inline-block" }}>
                    <input
                     type="text"
@@ -44,7 +44,7 @@ export default function Search({ icon }: SearchProp) {
                     value={query}
                     onChange = {(e) =>setQuery(e.target.value)}
                     autoFocus
-                    style = {{ paddingRight: "2rem" }}
+                    className="p-32 border rounded-sm w-full"
                 />
                 {query && (
                     <button
@@ -53,8 +53,7 @@ export default function Search({ icon }: SearchProp) {
                             position: "absolute",
                             right: "0.5rem",
                             top: "50%",
-                            transform: "translateY(-50%",
-                            background: "transparent",
+                            transform: "translateY(-50%)",
                             border: "none",
                             cursor: "pointer",
                         }}
@@ -64,8 +63,7 @@ export default function Search({ icon }: SearchProp) {
                 )
                 } 
                 </div>
-                
-                 <div style={{ marginTop: "1rem" }}>
+                 <div className="my-5 space-y-3">
                     {entries && entries.length > 0 ? (
                         renderSearchResults(entries, () => setOpen(false))
                     ) : (

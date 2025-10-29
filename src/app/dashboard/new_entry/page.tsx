@@ -69,6 +69,7 @@ export default function NewEntry(){
                 placeholder="Title"
                 value = {title}
                 type = "text"
+                autoFocus
                 className="border rounded-lg 
                             w-[clamp(17rem,40%,50rem)]
                             text-center

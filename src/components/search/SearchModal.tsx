@@ -16,34 +16,20 @@ export default function AnimatedModal({isOpen, onClose, children}: ModalProps) {
                 <motion.div
                     key="backdrop"
                     initial = {{ opacity: 0 }}
-                    animate={{ opacity: 0.5 }}
+                    animate={{ opacity: 0.85 }}
                     exit={{ opacity: 0 }}
                     onClick={onClose}
-                    style ={{
-                        position: "fixed",
-                        inset: 0,
-                        background: "black",
-                        zIndex: 50,
-                    }}>
+                    className="fixed inset-0 bg-black flex items-center justify-center"
+                    >
                         <motion.div
                             key="modal"
                             initial={{ scale: 0.8, opacity: 0}}
                             animate={{ scale: 1, opacity: 1}}
                             exit={{ scale: 0.8, opacity: 0}}
                             onClick={(e) => e.stopPropagation()}
-                            style={{
-                                position: "absolute",
-                                top: "20%",
-                                left: "30%",
-                                transform: "translate(-50%, -50%)",
-                                background: "white",
-                                color: "black",
-                                padding: "2rem",
-                                borderRadius: "10px",
-                                width: "50%",
-                                maxWidth: "500px",
-                                zIndex: 51
-                            }}>
+                            className="flex flex-col items-center bg-gray-800 h-[80%] w-[84%] max-w-lg p-8
+                            translate-y-[1%] rounded-lg shadow-2xl"
+                            >
                                 {children}
                             </motion.div>
                     </motion.div>

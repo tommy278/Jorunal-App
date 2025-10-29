@@ -41,10 +41,8 @@ export default function Entries() {
     if (loading) return<div>This is the loading screen</div>;
     if (!user) return <div>Please log in</div>;
 
-    const padding = { padding: "2rem" }
-
     return(
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-10 mt-16 mx-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mx-10">
             {entries.length === 0 ? (
                 <h1>No Entries Yet</h1>
             ): (
@@ -53,12 +51,18 @@ export default function Entries() {
                         <Link
                             key = {entry.id} 
                             href={ `/dashboard/view_entry/${entry.id}-${slugify(entry.title)}` }
-                            className="block bg-blue-500 border border-green-500 rounded-lg"
+                            className="block bg-blue-500 rounded-lg"
                         >
-                            <div style= {padding}>
-                                <h4 className="font-bold mb-2">{entry.title}</h4>
-                                <p className="mb-2">{ entry.content }</p> 
-                                <p>{ entry.mood }</p> 
+                            <div className="p-8">
+                                <p className="flex justify-end text-sm text-gray-300 mb-1">
+                                    {convertTimestamp(entry.createdAt)}
+                                </p>
+                                <h4 className="flex justify-center font-bold m-2 md:text-lg">{entry.title}</h4>
+                                <p className="flex justify-center mb-2">
+                                    { entry.content.length >= 100 ?
+                                    entry.content.slice(0, 100) + "...":
+                                    entry.content } </p> 
+                                <p className="flex justify-center">{ entry.mood }</p>
                             </div>
                         </Link>
                     ))}
@@ -73,4 +77,12 @@ function slugify(title: string) {
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');  
+}
+
+function convertTimestamp(timestamp: string): string{
+    const readable = new Date(timestamp).toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    })
+    return readable
 }

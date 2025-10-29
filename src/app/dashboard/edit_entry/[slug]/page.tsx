@@ -101,6 +101,7 @@ export default function Page ({params}: PageProps) {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => setTitle(e.target.value)}
                     placeholder="Title"
                     value = {title}
+                    autoFocus
                     type = "text"
                     className="border rounded-lg 
                     w-[clamp(17rem,40%,50rem)]
