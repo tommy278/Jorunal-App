@@ -28,10 +28,10 @@ function Page({ params }: PageProps) {
     <div className="flex flex-col items-center mt-10 h-screen">
       <h1 className="font-bold 
                       text-[clamp(3rem,5vw,4rem)]
-                      border
-                      rounded-lg
                       py-2
                       px-1
+                      text-blue-400
+                      border rounded-lg
                       ">{entry.title}
                       </h1>
       <p className="text-gray-400 w-[clamp(17rem,40%,50rem)]
