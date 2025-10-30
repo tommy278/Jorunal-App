@@ -17,13 +17,12 @@ export default function Search({ icon }: SearchProp) {
     const [query, setQuery] = useState("");
     const { user } = useAuth();
 
-    if (!user) return
-
     const fetchEntries = useCallback(async (q: string) => {
+        if (!user) return [] 
         const res = await fetch(`/api/users/search_entries?userId=${user.id}&query=${encodeURIComponent(q)}`);
         const data = await res.json();
         return data.entries ?? [];
-    }, [user?.id]); 
+    }, [user ?? null]); 
 
     const entries = useDebouncedSearch(query, fetchEntries);
 

@@ -2,6 +2,7 @@
 
 import { use, useState, useEffect, ChangeEvent } from "react";
 import { useRouter }  from "next/navigation";
+import Loading from "@/components/Loading/EditLoading";
 
 interface PageProps {
     params: Promise<{ slug: string }> 
@@ -88,7 +89,7 @@ export default function Page ({params}: PageProps) {
         }
     }
 
-    if (loading) return <div>Loading...</div>
+    if (loading) return <Loading />
     if (!id) return <div>Something went wrong, try again</div>
 
     return (

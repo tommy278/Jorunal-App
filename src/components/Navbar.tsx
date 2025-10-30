@@ -2,22 +2,23 @@
 
 import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
-import { useRouter } from "next/navigation";
 import Search from "./search/Search"
 
 import { GoSignOut } from "react-icons/go";
 import { GoPlusCircle } from "react-icons/go"
 import { GoSearch } from "react-icons/go"
 import { GoRepo } from "react-icons/go";
+import Logout from "@/components/Logout"
 
-export default function Navbar() {
-    const {user, logout} = useAuth();
-    const router = useRouter();
+type User = { id: string; email: string } | null;
 
-    const handleLogout = async () => {
-        await logout();
-        router.push("/");
-    }
+interface NavbarProps {
+    serverUser?: User | null;
+}
+
+export default function Navbar({ serverUser }: NavbarProps ) {
+    const {user: clientUser} = useAuth()
+    const user = clientUser ?? serverUser;
 
     const iconClass = "w-6 h-6 text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
     const textClass = "text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer"
@@ -27,13 +28,13 @@ export default function Navbar() {
         <nav className="flex items-center justify-between px-6 bg-white dark:bg-gray-900 shadow-md">
             <div className="flex items-center space-x-4 cursor-pointer">
                 {!user ? (
-                    <div className="nav-item" onClick={() => router.push("/")}>
+                    <Link className="nav-item" href="/">
                         <GoRepo className={iconClass}/>
-                    </div>
+                    </Link>
                 ):(
-                    <div className="nav-item" onClick={() => router.push("/dashboard/entries")}>
+                    <Link className="nav-item" href="/dashboard/entries">
                         <GoRepo className={iconClass}/>
-                    </div>
+                    </Link>
                 )}
             </div>
 
@@ -42,15 +43,15 @@ export default function Navbar() {
             {!user ? (
                 <>
                     <div className={style}>
-                        <div className="nav-item" onClick={() => router.push("/login")}>
+                        <Link className="nav-item" href="/login">
                             <div className={textClass}>Login</div>
-                        </div>  
+                        </Link>  
                     </div>
 
                     <div className={style}>
-                        <div className="nav-item" onClick={() => router.push("/register")}>
+                        <Link className="nav-item" href="/register">
                             <div className={textClass}>Register</div>
-                        </div>
+                        </Link>
                     </div>
                 </>
             ): (
@@ -66,10 +67,8 @@ export default function Navbar() {
                 </div>
 
                 <div className={style}>
-                    <div className="nav-item" onClick={handleLogout}>
-                        <GoSignOut className={iconClass}/>
-                    </div>
-                </div>   
+                    <Logout />
+                </div>
             </>
             )}
             </div>

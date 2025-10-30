@@ -3,6 +3,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading/NewEntryLoading"
 
 interface Data {
             userId: string,
@@ -57,7 +58,7 @@ export default function NewEntry(){
         }
     }
 
-    if (loading) return <div>This is the loading screen</div>
+    if (loading) return <Loading />
 
     return(
         <form 

@@ -1,6 +1,6 @@
 import { Suspense, use } from "react";
 import Link from "next/link";
-import Loading from "@/components/Loading";
+import Loading from "@/components/Loading/ViewLoading";
 import { getEntry } from "@/lib/ServerFetching/entry"
 
 import { FaStar } from "react-icons/fa";
@@ -59,7 +59,7 @@ export default function PageWrapper(props: PageProps) {
     <Suspense fallback={<Loading />}>
       <Page {...props} />
     </Suspense>
-  );
+  ); 
 }
 
 function StarRating({ rating }: {rating: number }) {

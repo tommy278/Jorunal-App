@@ -1,19 +1,18 @@
 import { AuthProvider } from "@/context/AuthContext";
 import Navbar from "@/components/Navbar";
-import './globals.css'
 import { ThemeProvider } from "@/context/ThemeContext";
+import {getUserFromServer} from "@/lib/auth"
+import './globals.css'
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({children,}: Readonly<{children: React.ReactNode;}>) 
+{
+  const user = await getUserFromServer();
   return (
     <html lang="en">
       <body>
         <AuthProvider>
           <ThemeProvider>
-            <Navbar />
+            <Navbar serverUser={user}/>
             {children}
           </ThemeProvider>
         </AuthProvider>
