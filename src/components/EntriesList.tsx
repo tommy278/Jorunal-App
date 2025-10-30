@@ -11,7 +11,6 @@ interface Entry {
 }
 
 export default function EntriesList({entries}: {entries: Entry[]}) {
-    console.log(entries)
     return(
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mx-10">
             {entries.length === 0 ? (

@@ -25,7 +25,7 @@ function Page({ params }: PageProps) {
     const entry = use(getEntry(id)); 
 
   return (
-    <div className="flex flex-col items-center mt-10 h-screen">
+    <div className="flex flex-col items-center mt-10">
       <h1 className="font-bold 
                       text-[clamp(3rem,5vw,4rem)]
                       py-2
@@ -37,6 +37,13 @@ function Page({ params }: PageProps) {
       <p className="text-gray-400 w-[clamp(17rem,40%,50rem)]
                                   text-[clamp(1rem,5vw,1.5rem)]
                                   border rounded-sm mt-5 p-5">{entry.content}</p>
+     <div className="flex flex-col lg:flex-row lg:justify-between items-start lg:items-center text-gray-400 text-xs space-y-1 lg:space-y-0 lg:space-x-4 lg:w-[40%] mt-2">
+      <span>Created: {convertTimestamp(entry.createdAt)}</span>
+      { new Date(entry.createdAt).getTime() !== new Date(entry.updatedAt).getTime() && (
+        <span>Updated: {convertTimestamp(entry.updatedAt)}</span>
+      )}
+    </div>
+      
       <StarRating rating={entry.mood} />
       <Link 
         href={`/dashboard/edit_entry/${entry.id}-${slugify(entry.title)}`}
@@ -64,4 +71,11 @@ function StarRating({ rating }: {rating: number }) {
       ))}
     </div>
   )
+}
+function convertTimestamp(timestamp: Date): string{
+    const readable = new Date(timestamp).toLocaleString('en-US', {
+        dateStyle: 'medium',
+        timeStyle: 'short',
+    })
+    return readable
 }
