@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const RETRY_DELAY: number = 10000;
         const REFRESH_INTERVAL: number = 5 * 60 * 1000;
         let retries: number = 0;
-        let MAX_RETRIES: number = 3;
+        const MAX_RETRIES: number = 3;
 
         async function startRefreshLoop() {
             if (aborted) return;
