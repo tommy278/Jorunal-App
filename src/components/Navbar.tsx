@@ -15,6 +15,17 @@ interface NavbarProps {
   serverUser?: User | null
 }
 
+function Logo() {
+  return (
+    <>
+      <h1 className="flex justify-start text-xl">
+        Journal
+        <span className="ml-1 text-blue-700">App</span>
+      </h1>
+    </>
+  )
+}
+
 export default function Navbar({ serverUser }: NavbarProps) {
   const { user: clientUser } = useAuth()
   const user = clientUser ?? serverUser
@@ -27,22 +38,25 @@ export default function Navbar({ serverUser }: NavbarProps) {
 
   return (
     <nav className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between bg-white px-6 shadow dark:bg-gray-900">
-      <div className="flex cursor-pointer items-center gap-x-6">
+      <div className="flex cursor-pointer items-center gap-x-2">
         {!user ? (
-          <Link className="nav-item" href="/">
-            <GoRepo className={iconClass} />
-          </Link>
+          <>
+            <Link className="nav-item flex items-center gap-x-2" href="/">
+              <GoRepo className={iconClass} />
+              <Logo />
+            </Link>
+          </>
         ) : (
-          <Link className="nav-item" href="/dashboard/entries">
-            <GoRepo className={iconClass} />
-          </Link>
+          <>
+            <Link
+              className="nav-item flex items-center gap-x-2"
+              href="/dashboard/entries"
+            >
+              <GoRepo className={iconClass} />
+              <Logo />
+            </Link>
+          </>
         )}
-        <div>
-          <h1 className="flex justify-start text-xl">
-            Journal
-            <span className="ml-1 text-blue-700">App</span>
-          </h1>
-        </div>
       </div>
 
       <div className="mx-6 flex items-center gap-x-4">

@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import CenterContainer from '@/components/CenterContainer'
 
 export default function Home() {
   return (
-    <div className="flex min-h-[calc(100vh-64px)] items-center justify-center pt-6">
+    <CenterContainer>
       <div className="text-center">
         <h1 className="mb-4 text-[clamp(3rem,5vw,4rem)] font-bold">
           Reflect, Grow. Understand yourself.
@@ -18,6 +19,6 @@ export default function Home() {
           Get Started
         </Link>
       </div>
-    </div>
+    </CenterContainer>
   )
 }
