@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { Post, PatchEntry } from '@/lib/constants'
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url)
@@ -16,13 +17,6 @@ export async function GET(req: NextRequest) {
     entries: entries ?? [],
     message: entries?.length ? 'Entries fetched' : 'No entries yet',
   })
-}
-
-interface Post {
-  userId: string
-  content: string
-  mood: number
-  title?: string
 }
 
 export async function POST(req: NextRequest) {
@@ -44,12 +38,6 @@ export async function POST(req: NextRequest) {
     console.error(err)
     return NextResponse.json({ message: 'Failed to create entry' })
   }
-}
-
-interface PatchEntry {
-  title?: string
-  content?: string
-  mood?: number
 }
 
 export async function PATCH(req: NextRequest) {

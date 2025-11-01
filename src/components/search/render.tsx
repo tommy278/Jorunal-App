@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { slugify } from "@/lib/search/utils";
+import Link from 'next/link'
+import { slugify } from '@/lib/search/utils'
+import { Entry } from '@/lib/constants'
 
-export function renderSearchResults(entries: any[], closeModal: () => void) {
+export function renderSearchResults(entries: Entry[], closeModal: () => void) {
   return entries.map((e) => (
     <div key={e.id}>
       <Link
@@ -11,5 +12,5 @@ export function renderSearchResults(entries: any[], closeModal: () => void) {
         <strong>{e.title}</strong> - {e.content.slice(0, 50)}...
       </Link>
     </div>
-  ));
+  ))
 }

@@ -5,12 +5,8 @@ import SearchModal from './SearchModal'
 import { useAuth } from '@/context/AuthContext'
 import { useDebouncedSearch } from '@/lib/search/debounce'
 import { renderSearchResults } from './render'
-
 import { GoXCircle } from 'react-icons/go'
-
-interface SearchProp {
-  icon: React.ReactNode
-}
+import { SearchProp } from '@/lib/constants'
 
 export default function Search({ icon }: SearchProp) {
   const [open, setOpen] = useState(false)
@@ -26,7 +22,7 @@ export default function Search({ icon }: SearchProp) {
       const data = await res.json()
       return data.entries ?? []
     },
-    [user ?? null]
+    [user]
   )
 
   const entries = useDebouncedSearch(query, fetchEntries)

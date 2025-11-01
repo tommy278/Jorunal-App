@@ -5,13 +5,8 @@ import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 import Loading from '@/components/Loading/NewEntryLoading'
 import toast from 'react-hot-toast'
-
-interface Data {
-  userId: string
-  content: string
-  mood: number
-  title?: string
-}
+import { Post } from '@/lib/constants'
+import { slugify } from '@/lib/helper'
 
 export default function NewEntry() {
   const { user, loading } = useAuth() // remember to use user.id, user is an object
@@ -29,7 +24,7 @@ export default function NewEntry() {
       return
     }
 
-    const data: Data = {
+    const data: Post = {
       userId: user.id,
       title: title,
       content: content,
@@ -114,11 +109,4 @@ export default function NewEntry() {
       </button>
     </form>
   )
-}
-
-function slugify(title: string) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }

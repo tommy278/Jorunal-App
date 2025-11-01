@@ -5,6 +5,7 @@ import { useState } from 'react'
 import { IoEyeSharp } from 'react-icons/io5'
 import { FaEyeSlash } from 'react-icons/fa'
 import CenterContainer from '@/components/CenterContainer'
+import { input, inputSize, box, headerFormat } from '@/lib/themes/constants'
 
 export default function Login() {
   const { login } = useAuth()
@@ -23,24 +24,6 @@ export default function Login() {
       console.error('Login failed', err)
     }
   }
-
-  const input = 'p-2 border border-gray-200 rounded'
-  const inputSize = { width: '70%', height: '10%', marginBottom: '10px' }
-
-  const box = `
-  flex flex-col items-center justify-center space-y-4
-  w-11/12
-  max-w-md
-  gap-4 
-  sm:w-2/3 
-  md:w-2/5
-  h-1/2
-  border border-gray-300 rounded shadow-md
-  bg-white/10 backdrop-blur-md
-  p-10
-`
-
-  const headerFormat = { marginBottom: '10px', fontSize: '200%' }
 
   return (
     <CenterContainer>

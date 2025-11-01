@@ -1,14 +1,6 @@
 import Link from 'next/link'
-
-interface Entry {
-  title: string
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  userId: string
-  content: string
-  mood: number
-}
+import { Entry } from '@/lib/constants'
+import { convertTimestamp, slugify } from '@/lib/helper'
 
 export default function EntriesList({ entries }: { entries: Entry[] }) {
   return (
@@ -42,19 +34,4 @@ export default function EntriesList({ entries }: { entries: Entry[] }) {
       )}
     </div>
   )
-}
-
-function slugify(title: string) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-}
-
-function convertTimestamp(timestamp: Date): string {
-  const readable = new Date(timestamp).toLocaleString('en-US', {
-    dateStyle: 'medium',
-    timeStyle: 'short',
-  })
-  return readable
 }

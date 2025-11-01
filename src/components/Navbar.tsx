@@ -3,38 +3,17 @@
 import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import Search from './search/Search'
-
 import { GoPlusCircle } from 'react-icons/go'
 import { GoSearch } from 'react-icons/go'
 import { GoRepo } from 'react-icons/go'
 import Logout from '@/components/Logout'
-
-type User = { id: string; email: string } | null
-
-interface NavbarProps {
-  serverUser?: User | null
-}
-
-function Logo() {
-  return (
-    <>
-      <h1 className="flex justify-start text-xl">
-        Journal
-        <span className="ml-1 text-blue-700">App</span>
-      </h1>
-    </>
-  )
-}
+import { NavbarProps } from '@/lib/constants'
+import { style, textClass, iconClass } from '@/lib/themes/constants'
+import Logo from '@/components/Logo'
 
 export default function Navbar({ serverUser }: NavbarProps) {
   const { user: clientUser } = useAuth()
   const user = clientUser ?? serverUser
-
-  const iconClass =
-    'w-6 h-6 text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer'
-  const textClass =
-    'text-gray-700 dark:text-white hover:text-blue-500 cursor-pointer'
-  const style = 'py-2 flex justify-center'
 
   return (
     <nav className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between bg-gray-200 px-6 shadow dark:bg-gray-900">

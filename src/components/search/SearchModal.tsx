@@ -1,13 +1,7 @@
 'use client'
 
 import { motion, AnimatePresence } from 'framer-motion'
-import { ReactNode } from 'react'
-
-interface ModalProps {
-  isOpen: boolean
-  onClose: () => void
-  children: ReactNode
-}
+import { ModalProps } from '@/lib/constants'
 
 export default function AnimatedModal({
   isOpen,

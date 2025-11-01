@@ -4,17 +4,8 @@ import { use, useState, useEffect, ChangeEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import Loading from '@/components/Loading/EditLoading'
 import toast from 'react-hot-toast'
-
-interface PageProps {
-  params: Promise<{ slug: string }>
-}
-
-interface Data {
-  id: string
-  title?: string
-  content?: string
-  mood?: number
-}
+import { Data, PageProps } from '@/lib/constants'
+import { slugify } from '@/lib/helper'
 
 export default function Page({ params }: PageProps) {
   const [loading, setLoading] = useState(true)
@@ -158,11 +149,4 @@ export default function Page({ params }: PageProps) {
       </form>
     </div>
   )
-}
-
-function slugify(title: string) {
-  return title
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
 }
