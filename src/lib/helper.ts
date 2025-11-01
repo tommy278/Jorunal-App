@@ -6,7 +6,7 @@ export function slugify(title: string) {
 }
 
 export function convertTimestamp(timestamp: Date): string {
-  const readable = new Date(timestamp).toLocaleString('en-US', {
+  const readable = timestamp.toLocaleString('en-US', {
     dateStyle: 'medium',
     timeStyle: 'short',
   })
