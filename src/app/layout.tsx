@@ -12,7 +12,7 @@ export default async function RootLayout({
   const user = await getUserFromServer()
   return (
     <html lang="en" className="pt-16">
-      <body>
+      <body className="bg-gradient-to-r from-blue-100 via-pink-100 to-yellow-100 text-gray-800 dark:bg-gradient-to-r dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 dark:text-gray-100">
         <AuthProvider>
           <ThemeProvider>
             <Navbar serverUser={user} />

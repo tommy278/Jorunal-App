@@ -114,14 +114,14 @@ export default function Page({ params }: PageProps) {
           value={title}
           autoFocus
           type="text"
-          className="center w-[clamp(17rem,40%,50rem)] rounded-lg border text-center"
+          className="center w-[clamp(17rem,40%,50rem)] rounded-lg border text-center shadow-md"
         />
         <textarea
           onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
             setContent(e.target.value)
           }
           value={content}
-          className="w-[clamp(17rem,40%,50rem)] rounded-lg border p-2"
+          className="w-[clamp(17rem,40%,50rem)] rounded-lg border p-2 shadow-sm"
           rows={10}
           placeholder="Enter content here..."
         />
@@ -147,11 +147,11 @@ export default function Page({ params }: PageProps) {
           disabled={saving}
           className="w-30 cursor-pointer rounded-lg border bg-white/10 backdrop-blur-xs"
         >
-          {saving ? 'Saving...' : 'Edit Entry'}
+          {saving ? 'Saving...' : 'Save'}
         </button>
         <button
           onClick={handleDelete}
-          className="flex w-30 cursor-pointer justify-center rounded-lg bg-red-900 p-1"
+          className="flex w-30 cursor-pointer justify-center rounded-lg bg-red-600 p-1 dark:bg-red-900"
         >
           Delete
         </button>

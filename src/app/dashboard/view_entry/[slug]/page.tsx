@@ -25,10 +25,10 @@ function Page({ params }: PageProps) {
 
   return (
     <div className="mt-10 flex flex-col items-center">
-      <h1 className="rounded-lg border px-1 py-2 text-center text-[clamp(1.5rem,5vw,3rem)] font-bold break-words text-blue-400">
+      <h1 className="rounded-lg border px-1 py-2 text-center text-[clamp(1.5rem,5vw,3rem)] font-bold break-words text-blue-400 shadow-lg">
         {entry.title}
       </h1>
-      <p className="mt-5 w-[clamp(17rem,40%,50rem)] rounded-sm border p-5 text-[clamp(1rem,5vw,1.5rem)] text-gray-400">
+      <p className="mt-5 w-[clamp(17rem,40%,50rem)] rounded-sm border p-5 text-[clamp(1rem,5vw,1.5rem)] text-gray-400 shadow-md">
         {entry.content}
       </p>
       <div className="mt-2 flex flex-col items-start space-y-1 text-xs text-gray-400 lg:w-[40%] lg:flex-row lg:items-center lg:justify-between lg:space-y-0 lg:space-x-4">

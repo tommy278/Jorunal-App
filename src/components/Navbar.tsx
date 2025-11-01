@@ -37,7 +37,7 @@ export default function Navbar({ serverUser }: NavbarProps) {
   const style = 'py-2 flex justify-center'
 
   return (
-    <nav className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between bg-white px-6 shadow dark:bg-gray-900">
+    <nav className="fixed top-0 left-0 z-50 flex h-16 w-full items-center justify-between bg-gray-200 px-6 shadow dark:bg-gray-900">
       <div className="flex cursor-pointer items-center gap-x-2">
         {!user ? (
           <>
@@ -59,7 +59,7 @@ export default function Navbar({ serverUser }: NavbarProps) {
         )}
       </div>
 
-      <div className="mx-6 flex items-center gap-x-4">
+      <div className="mx-6 flex items-center gap-x-8">
         {!user ? (
           <>
             <div className={style}>

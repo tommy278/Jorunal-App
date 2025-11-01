@@ -1,18 +1,4 @@
-@import "tailwindcss";
-
-@media (prefers-color-scheme: light) {
-  body {
-    background: white;
-    color: black;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  body {
-    background:rgb(0, 13, 27);
-    color: #e6edf3;
-  }
-}
+@import 'tailwindcss';
 
 /* maybe scrollbar styling or global link reset */
 a {
@@ -20,14 +6,13 @@ a {
 }
 
 input {
-    padding-top: 5px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    padding-left: 10px;
+  padding-top: 5px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  padding-left: 10px;
 }
 
 .center::placeholder {
   text-align: center;
   font-weight: 600;
 }
-

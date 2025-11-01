@@ -21,10 +21,10 @@ export default function EntriesList({ entries }: { entries: Entry[] }) {
             <Link
               key={entry.id}
               href={`/dashboard/view_entry/${entry.id}-${slugify(entry.title)}`}
-              className="block transform rounded-lg bg-blue-500 transition-transform duration-200 hover:scale-105"
+              className="block transform rounded-lg bg-blue-400 shadow-md transition-transform duration-200 hover:scale-105 dark:bg-blue-500"
             >
               <div className="p-8">
-                <p className="mb-1 flex justify-end text-sm text-gray-300">
+                <p className="mb-1 flex justify-end text-sm text-gray-100 dark:text-gray-300">
                   {convertTimestamp(entry.createdAt)}
                 </p>
                 <h4 className="m-2 flex justify-center font-bold md:text-lg">
