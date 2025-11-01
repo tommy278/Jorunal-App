@@ -4,6 +4,7 @@ import { useAuth } from '@/context/AuthContext'
 import { IoEyeSharp } from 'react-icons/io5'
 import { FaEyeSlash } from 'react-icons/fa'
 import CenterContainer from '@/components/CenterContainer'
+import toast from 'react-hot-toast'
 
 import { useState } from 'react'
 
@@ -22,8 +23,9 @@ export default function Register() {
     try {
       await register(username, email, password, confirmPassword)
       await login(username, password)
-      console.log('Successfully registered')
+      toast.success('Successfully registered')
     } catch (err) {
+      toast.error('Registration failed')
       console.error('Registration failed', err)
     }
   }

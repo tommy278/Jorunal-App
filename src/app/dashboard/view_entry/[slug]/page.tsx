@@ -2,7 +2,6 @@ import { Suspense, use } from 'react'
 import Link from 'next/link'
 import Loading from '@/components/Loading/ViewLoading'
 import { getEntry } from '@/lib/ServerFetching/entry'
-
 import { FaStar } from 'react-icons/fa'
 import { CiStar } from 'react-icons/ci'
 

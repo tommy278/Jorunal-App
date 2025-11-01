@@ -1,11 +1,13 @@
 import EntriesList from '@/components/EntriesList'
 import { getUserFromServer } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
+import toast from 'react-hot-toast'
 
 export default async function Page() {
   const user = await getUserFromServer()
   if (!user) {
     console.error('Please sign in')
+    toast.error('Please sign in')
     return
   }
   const entries = await prisma.entry.findMany({

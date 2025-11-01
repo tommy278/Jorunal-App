@@ -3,6 +3,7 @@ import Navbar from '@/components/Navbar'
 import { ThemeProvider } from '@/context/ThemeContext'
 import { getUserFromServer } from '@/lib/auth'
 import { Analytics } from '@vercel/analytics/next'
+import { Toaster } from 'react-hot-toast'
 import './globals.css'
 
 export default async function RootLayout({
@@ -17,6 +18,7 @@ export default async function RootLayout({
             <Navbar serverUser={user} />
             {children}
             {process.env.NODE_ENV === 'production' && <Analytics />}
+            <Toaster position="top-right" />
           </ThemeProvider>
         </AuthProvider>
       </body>
