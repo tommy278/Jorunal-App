@@ -5,9 +5,7 @@ export async function GET(req: NextRequest) {
   const url = new URL(req.url)
   const userId = url.searchParams.get('id')
 
-  if (!userId) {
-    return NextResponse.json({ entries: [], message: 'No user ID provided' })
-  }
+  if (!userId) return NextResponse.json({ entries: [], message: 'No user ID' })
 
   const entries = await prisma.entry.findMany({
     where: { userId },
@@ -15,8 +13,8 @@ export async function GET(req: NextRequest) {
   })
 
   return NextResponse.json({
-    message: 'Entries fetched',
     entries: entries ?? [],
+    message: entries?.length ? 'Entries fetched' : 'No entries yet',
   })
 }
 
